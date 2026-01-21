@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.dbapp.MainController">
+    <center>
+        <TabPane>
+            <tabs>
+                <Tab text="Autorzy" closable="false">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        <TableView fx:id="autorTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colAutorId" text="ID" prefWidth="50"/>
+                                <TableColumn fx:id="colAutorImie" text="Imię" prefWidth="100"/>
+                                <TableColumn fx:id="colAutorNazwisko" text="Nazwisko" prefWidth="100"/>
+                                <TableColumn fx:id="colAutorPseudonim" text="Pseudonim" prefWidth="100"/>
+                                <TableColumn fx:id="colAutorKraj" text="Kraj" prefWidth="100"/>
+                            </columns>
+                        </TableView>
+                        
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <TextField fx:id="fieldImie" promptText="Imię"/>
+                            <TextField fx:id="fieldNazwisko" promptText="Nazwisko"/>
+                            <TextField fx:id="fieldPseudonim" promptText="Pseudonim"/>
+                            <TextField fx:id="fieldKraj" promptText="Kraj"/>
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button text="Pokaż utwory" onAction="#handleShowAutorUtwory"/>
+                            <Button text="Dodaj" onAction="#handleAddAutor"/>
+                            <Button text="Aktualizuj" onAction="#handleUpdateAutor"/>
+                            <Button text="Usuń" onAction="#handleDeleteAutor"/>
+                            <Button text="Odśwież" onAction="#loadAutorzy"/>
+                        </HBox>
+                    </VBox>
+                </Tab>
+
+                <Tab text="Utwory" closable="false">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        <TableView fx:id="utworTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colUtworId" text="ID" prefWidth="50"/>
+                                <TableColumn fx:id="colUtworTytul" text="Tytuł" prefWidth="150"/>
+                                <TableColumn fx:id="colUtworRok" text="Rok" prefWidth="60"/>
+                                <TableColumn fx:id="colUtworDlugosc" text="Długość (s)" prefWidth="80"/>
+                                <TableColumn fx:id="colUtworGatunek" text="Gatunek" prefWidth="100"/>
+                            </columns>
+                        </TableView>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <TextField fx:id="fieldTytul" promptText="Tytuł"/>
+                            <TextField fx:id="fieldRok" promptText="Rok wydania" prefWidth="80"/>
+                            <TextField fx:id="fieldDlugosc" promptText="Sekundy" prefWidth="80"/>
+                            <TextField fx:id="fieldGatunek" promptText="Gatunek"/>
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button text="Pokaż autorów" onAction="#handleShowUtworAutorzy"/>
+                            <Button text="Dodaj" onAction="#handleAddUtwor"/>
+                            <Button text="Aktualizuj" onAction="#handleUpdateUtwor"/>
+                            <Button text="Usuń" onAction="#handleDeleteUtwor"/>
+                            <Button text="Odśwież" onAction="#loadUtwory"/>
+                        </HBox>
+                    </VBox>
+                </Tab>
+
+                <Tab text="Połączenia" closable="false">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Autor:"/>
+                            <ComboBox fx:id="comboAutor" prefWidth="200" promptText="Wybierz autora"/>
+                            <Label text="Utwór:"/>
+                            <ComboBox fx:id="comboUtwor" prefWidth="200" promptText="Wybierz utwór"/>
+                            <Button text="Połącz" onAction="#handleAddPolaczenie"/>
+                        </HBox>
+
+                        <TableView fx:id="polaczenieTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colPolaczenieAutor" text="Autor" prefWidth="250"/>
+                                <TableColumn fx:id="colPolaczenieUtwor" text="Utwór" prefWidth="250"/>
+                            </columns>
+                        </TableView>
+
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button text="Usuń połączenie" onAction="#handleDeletePolaczenie"/>
+                            <Button text="Odśwież" onAction="#loadPolaczenia"/>
+                        </HBox>
+                    </VBox>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+    <bottom>
+        <ToolBar>
+            <Button text="Wyczyść duplikaty z bazy" onAction="#handleCleanDuplicates"/>
+            <Pane HBox.hgrow="ALWAYS" /> <!-- Spacer -->
+            <Label text="v1.0" />
+        </ToolBar>
+    </bottom>
+</BorderPane>

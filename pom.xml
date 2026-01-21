@@ -33,6 +33,12 @@
             <artifactId>ojdbc11</artifactId>
             <version>23.3.0.23.09</version>
         </dependency>
+        <!-- Oracle NLS (Character Set Support) -->
+        <dependency>
+            <groupId>com.oracle.database.nls</groupId>
+            <artifactId>orai18n</artifactId>
+            <version>23.3.0.23.09</version>
+        </dependency>
     </dependencies>
 
     <build>
