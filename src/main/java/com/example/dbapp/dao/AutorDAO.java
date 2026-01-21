@@ -103,18 +103,28 @@ public class AutorDAO {
     }
 
     public void removeDuplicates() throws SQLException {
-        // Usuwanie duplikatów pozostawiając ten z najmniejszym ID
-        String sql = "DELETE FROM autor a1 WHERE rowid > " +
+        // Znajdź ID duplikatów
+        String duplicatesQuery = "SELECT id_autor FROM autor a1 WHERE rowid > " +
                      "(SELECT MIN(rowid) FROM autor a2 " +
                      "WHERE a1.imie = a2.imie " +
                      "AND a1.nazwisko = a2.nazwisko " +
                      "AND NVL(a1.pseudonim, ' ') = NVL(a2.pseudonim, ' ') " +
                      "AND NVL(a1.kraj, ' ') = NVL(a2.kraj, ' '))";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement()) {
-            int count = stmt.executeUpdate(sql);
-            System.out.println("Usunięto duplikatów autorów: " + count);
+        String deleteLinks = "DELETE FROM autor_utwor WHERE id_autor IN (" + duplicatesQuery + ")";
+        String deleteAuthors = "DELETE FROM autor WHERE id_autor IN (" + duplicatesQuery + ")";
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            conn.setAutoCommit(false);
+            try (Statement stmt = conn.createStatement()) {
+                int linksDeleted = stmt.executeUpdate(deleteLinks);
+                int authorsDeleted = stmt.executeUpdate(deleteAuthors);
+                conn.commit();
+                System.out.println("Usunięto duplikatów: " + authorsDeleted + " (oraz " + linksDeleted + " powiązań)");
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
         }
     }
 }

@@ -432,4 +432,28 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void handleResetDatabase() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potwierdzenie resetu");
+        alert.setHeaderText("Czy na pewno chcesz zresetować bazę?");
+        alert.setContentText("Ta operacja usunie WSZYSTKIE dane, ID wrócą do 1, i przywróci dane fabryczne.");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            try {
+                com.example.dbapp.util.DatabaseInitializer.resetDatabase();
+                
+                // Odśwież widoki
+                loadAutorzy();
+                loadUtwory();
+                loadPolaczenia();
+                
+                showAlert("Baza została zresetowana do stanu początkowego!");
+            } catch (Exception e) {
+                showAlert("Błąd resetowania bazy: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -106,6 +106,7 @@
         <ToolBar>
             <Button text="Wyczyść duplikaty z bazy" onAction="#handleCleanDuplicates"/>
             <Pane HBox.hgrow="ALWAYS" /> <!-- Spacer -->
+            <Button text="RESET BAZY" onAction="#handleResetDatabase" style="-fx-text-fill: red; -fx-font-weight: bold;"/>
             <Label text="v1.0" />
         </ToolBar>
     </bottom>

@@ -103,17 +103,27 @@ public class UtworDAO {
     }
 
     public void removeDuplicates() throws SQLException {
-        String sql = "DELETE FROM utwor u1 WHERE rowid > " +
+        String duplicatesQuery = "SELECT id_utwor FROM utwor u1 WHERE rowid > " +
                      "(SELECT MIN(rowid) FROM utwor u2 " +
                      "WHERE u1.tytul = u2.tytul " +
                      "AND u1.rok_wydania = u2.rok_wydania " +
                      "AND NVL(u1.dlugosc_sekundy, 0) = NVL(u2.dlugosc_sekundy, 0) " +
                      "AND NVL(u1.gatunek, ' ') = NVL(u2.gatunek, ' '))";
+
+        String deleteLinks = "DELETE FROM autor_utwor WHERE id_utwor IN (" + duplicatesQuery + ")";
+        String deleteUtwory = "DELETE FROM utwor WHERE id_utwor IN (" + duplicatesQuery + ")";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement()) {
-            int count = stmt.executeUpdate(sql);
-            System.out.println("Usunięto duplikatów utworów: " + count);
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            conn.setAutoCommit(false);
+            try (Statement stmt = conn.createStatement()) {
+                int linksDeleted = stmt.executeUpdate(deleteLinks);
+                int utworyDeleted = stmt.executeUpdate(deleteUtwory);
+                conn.commit();
+                System.out.println("Usunięto duplikatów: " + utworyDeleted + " (oraz " + linksDeleted + " powiązań)");
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
         }
     }
 }
