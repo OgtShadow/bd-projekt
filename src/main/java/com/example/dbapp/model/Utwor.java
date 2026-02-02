@@ -15,7 +15,6 @@ public class Utwor {
         this.gatunek = gatunek;
     }
 
-    // Konstruktor bez ID
     public Utwor(String tytul, int rokWydania, int dlugoscSekundy, String gatunek) {
         this.tytul = tytul;
         this.rokWydania = rokWydania;

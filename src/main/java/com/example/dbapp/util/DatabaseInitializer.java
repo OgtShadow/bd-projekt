@@ -36,19 +36,13 @@ public class DatabaseInitializer {
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
             
-            // Usuń dane w odpowiedniej kolejności (najpierw powiązania)
             executeStatement(stmt, "DELETE FROM autor_utwor");
             executeStatement(stmt, "DELETE FROM utwor");
             executeStatement(stmt, "DELETE FROM autor");
 
-            // Usuń sekwencje
             try { executeStatement(stmt, "DROP SEQUENCE seq_autor"); } catch (Exception e) {}
             try { executeStatement(stmt, "DROP SEQUENCE seq_utwor"); } catch (Exception e) {}
 
-            // Uruchom ponownie skrypt tworzący sekwencje i dane startowe (ale tabele już są, więc skrypt częściowo polegnie na CREATE TABLE - to ok, lub usunąć tabele też)
-            // Lepszym podejściem dla resetu jest DROP wszystkiego i postawienie od nowa.
-            
-            // Spróbujmy usunąć tabele też, aby skrypt database.sql postawił wszystko na czysto
             executeStatement(stmt, "DROP TABLE autor_utwor");
             executeStatement(stmt, "DROP TABLE utwor");
             executeStatement(stmt, "DROP TABLE autor");
@@ -57,7 +51,6 @@ public class DatabaseInitializer {
             e.printStackTrace();
         }
 
-        // Uruchom skrypt inicjalizujący od nowa
         runScript();
     }
 

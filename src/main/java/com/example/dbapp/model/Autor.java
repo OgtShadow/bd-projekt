@@ -15,7 +15,6 @@ public class Autor {
         this.kraj = kraj;
     }
 
-    // Konstruktor bez ID (ID nadawane przez bazę)
     public Autor(String imie, String nazwisko, String pseudonim, String kraj) {
         this.imie = imie;
         this.nazwisko = nazwisko;

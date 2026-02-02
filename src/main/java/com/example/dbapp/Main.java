@@ -10,11 +10,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Próba inicjalizacji bazy danych przy starcie
         com.example.dbapp.util.DatabaseInitializer.initialize();
 
         try {
-            // Ładowanie widoku FXML
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("main-view.fxml"));
             javafx.scene.Parent root = loader.load();
 
