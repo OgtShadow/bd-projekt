@@ -13,6 +13,10 @@
                         <padding>
                             <Insets top="10" right="10" bottom="10" left="10"/>
                         </padding>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Szukaj:"/>
+                            <TextField fx:id="searchAutorField" promptText="Wpisz frazę..." HBox.hgrow="ALWAYS"/>
+                        </HBox>
                         <TableView fx:id="autorTable" VBox.vgrow="ALWAYS">
                             <columns>
                                 <TableColumn fx:id="colAutorId" text="ID" prefWidth="50"/>
@@ -45,6 +49,10 @@
                         <padding>
                             <Insets top="10" right="10" bottom="10" left="10"/>
                         </padding>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Szukaj:"/>
+                            <TextField fx:id="searchUtworField" promptText="Wpisz frazę..." HBox.hgrow="ALWAYS"/>
+                        </HBox>
                         <TableView fx:id="utworTable" VBox.vgrow="ALWAYS">
                             <columns>
                                 <TableColumn fx:id="colUtworId" text="ID" prefWidth="50"/>
@@ -77,6 +85,11 @@
                         <padding>
                             <Insets top="10" right="10" bottom="10" left="10"/>
                         </padding>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Szukaj:"/>
+                            <TextField fx:id="searchPolaczenieField" promptText="Wpisz frazę..." HBox.hgrow="ALWAYS"/>
+                        </HBox>
 
                         <HBox spacing="10" alignment="CENTER_LEFT">
                             <Label text="Autor:"/>

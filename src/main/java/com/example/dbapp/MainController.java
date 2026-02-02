@@ -9,6 +9,8 @@ import com.example.dbapp.model.Utwor;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -30,6 +32,7 @@ public class MainController {
 
     @FXML private TextField fieldImie;
     @FXML private TextField fieldNazwisko;
+    @FXML private TextField searchAutorField;
     @FXML private TextField fieldPseudonim;
     @FXML private TextField fieldKraj;
 
@@ -47,6 +50,7 @@ public class MainController {
     @FXML private TextField fieldTytul;
     @FXML private TextField fieldRok;
     @FXML private TextField fieldDlugosc;
+    @FXML private TextField searchUtworField;
     @FXML private TextField fieldGatunek;
 
     private UtworDAO utworDAO = new UtworDAO();
@@ -57,6 +61,7 @@ public class MainController {
     @FXML private ComboBox<Utwor> comboUtwor;
     @FXML private TableView<Polaczenie> polaczenieTable;
     @FXML private TableColumn<Polaczenie, String> colPolaczenieAutor;
+    @FXML private TextField searchPolaczenieField;
     @FXML private TableColumn<Polaczenie, String> colPolaczenieUtwor;
 
     private PolaczenieDAO polaczenieDAO = new PolaczenieDAO();
@@ -89,7 +94,32 @@ public class MainController {
         colAutorPseudonim.setCellValueFactory(new PropertyValueFactory<>("pseudonim"));
         colAutorKraj.setCellValueFactory(new PropertyValueFactory<>("kraj"));
 
-        autorTable.setItems(autorList);
+        FilteredList<Autor> filteredData = new FilteredList<>(autorList, p -> true);
+
+        searchAutorField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(autor -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (autor.getImie().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (autor.getNazwisko().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (autor.getPseudonim() != null && autor.getPseudonim().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (autor.getKraj().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        SortedList<Autor> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(autorTable.comparatorProperty());
+
+        autorTable.setItems(sortedData);
         loadAutorzy();
 
         autorTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -201,7 +231,30 @@ public class MainController {
         colUtworDlugosc.setCellValueFactory(new PropertyValueFactory<>("dlugoscSekundy"));
         colUtworGatunek.setCellValueFactory(new PropertyValueFactory<>("gatunek"));
 
-        utworTable.setItems(utworList);
+        FilteredList<Utwor> filteredData = new FilteredList<>(utworList, p -> true);
+
+        searchUtworField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(utwor -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (utwor.getTytul().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (String.valueOf(utwor.getRokWydania()).contains(lowerCaseFilter)) {
+                    return true;
+                } else if (utwor.getGatunek().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        SortedList<Utwor> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(utworTable.comparatorProperty());
+
+        utworTable.setItems(sortedData);
         loadUtwory();
 
         utworTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -313,6 +366,29 @@ public class MainController {
     private void initPolaczenia() {
         colPolaczenieAutor.setCellValueFactory(new PropertyValueFactory<>("autorPelneNazwisko"));
         colPolaczenieUtwor.setCellValueFactory(new PropertyValueFactory<>("utworTytul"));
+
+        FilteredList<Polaczenie> filteredData = new FilteredList<>(polaczenieList, p -> true);
+
+        searchPolaczenieField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(polaczenie -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (polaczenie.getAutorPelneNazwisko().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (polaczenie.getUtworTytul().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        SortedList<Polaczenie> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(polaczenieTable.comparatorProperty());
+
+        polaczenieTable.setItems(sortedData);
 
         comboAutor.setItems(autorList);
         comboAutor.setConverter(new StringConverter<Autor>() {
